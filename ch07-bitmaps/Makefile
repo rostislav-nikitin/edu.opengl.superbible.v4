@@ -7,6 +7,7 @@ all:10.bitmaps 20.draw-pixels
 
 libglimage.a:helpers tga_image gl_image gli
 	ar rcs $@ $^
+	rm $^
 
 helpers:
 	g++ -c ${CXXFLAGS} -o $@ ../libs/gl_image/src/helpers.cpp

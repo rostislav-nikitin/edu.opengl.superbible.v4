@@ -1,5 +1,7 @@
 #include "../include/GL/tga_image.hpp"
 
+#include "../include/GL/helpers.hpp"
+
 #include <cassert>
 #include <fstream>
 #include <sstream>
