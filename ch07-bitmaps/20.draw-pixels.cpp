@@ -129,9 +129,11 @@ auto onRenderScene() -> void
 
 	// Copy
 	//glRasterPos2i(image.getWidth() / 2, image.getHeigth() / 2);
-	glRasterPos2i(Size / 2, Size / 2);
+	/*
+ 	glRasterPos2i(Size / 2, Size / 2);
 
 	glCopyPixels(0, 0, image.getWidth() / 2, image.getHeigth() / 2, GL_COLOR);
+	*/
 
 	glutSwapBuffers();
 }
