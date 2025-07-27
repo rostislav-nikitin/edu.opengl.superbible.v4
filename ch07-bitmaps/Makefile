@@ -1,4 +1,4 @@
-CXXFLAGS+=-std=c++23 -I../libs/math3d/include -I../libs/gl_image/include -I../libs/glad/include -lEGL -lGL -lGLU -lglut
+CXXFLAGS+=-std=c++23 -I../libs/math3d/include -I../libs/gl_image/include -I../libs/glad/include -I../libs/glew/include -lGL -lGLU -lglut
 
 all:10.bitmaps 20.draw-pixels 30.translation 40.imaging-subset
 
@@ -6,6 +6,12 @@ all:10.bitmaps 20.draw-pixels 30.translation 40.imaging-subset
 20.draw-pixels:libglimage.a
 30.translation:libglimage.a
 40.imaging-subset:libglimage.a libglad.a
+
+libglew.a:glew
+	ar rcs $@ $^
+
+glew:
+	g++ -c ${CXXFLAGS} -o $@ ../libs/glew/src/glew.c
 
 libglad.a:glad
 	ar rcs $@ $^
@@ -32,3 +38,6 @@ gli:
 math3d:
 	g++ -c ${CXXFLAGS} -o $@ ../libs/math3d/src/math3d.cpp
 
+clean:
+	rm -f glad glew gli gl_image helpers libglad.a libglimage.a tga_image
+	rm -f 10.bitmaps 20.draw-pixels 30.translation 40.imaging-subset

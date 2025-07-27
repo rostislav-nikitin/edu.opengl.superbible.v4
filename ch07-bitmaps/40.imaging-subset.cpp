@@ -1,11 +1,12 @@
-#include <EGL/egl.h>
-#include <glad/glad.h>
+//#include <EGL/egl.h>
 //#include <GL/glx.h>
+
+//#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <GL/gli.hpp>
-
 
 #include <cstdlib>
 
@@ -82,19 +83,22 @@ auto onRenderScene() -> void
 	glRasterPos2i(0, 0);
 
 
-	glConvolutionFilter2D(GL_CONVOLUTION_2D, GL_RGB, 3, 3, GL_LUMINANCE, GL_FLOAT, sharpenMat);
-	glEnable(GL_CONVOLUTION_2D);
+	//std::cout << &glConvolutionFilter2D << std::endl;
+
+	//glConvolutionFilter2D(GL_CONVOLUTION_2D, GL_RGB, 3, 3, GL_LUMINANCE, GL_FLOAT, sharpenMat);
+	//glEnable(GL_CONVOLUTION_2D);
 
  //void * glConvolutionFilter2D=(void *)ARB_get_proc_address("glConvolutionFilter2D");
 
-
 /*
+
 	glConvolutionFilter2D(GL_CONVOLUTION_2D, GL_RGB, 3, 3, GL_LUMINANCE, GL_FLOAT, embrossMat);
 	glEnable(GL_CONVOLUTION_2D);
 	glMatrixMode(GL_COLOR);
 	glLoadMatrixf(lumMat);
 	glMatrixMode(GL_MODELVIEW);
 */
+
 /*
 	for(int idx = 0; idx < 256; ++idx)
 	{
@@ -117,31 +121,48 @@ auto onRenderScene() -> void
 	glMatrixMode(GL_COLOR);
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
-	glDisable(GL_CONVOLUTION_2D);
-	glDisable(GL_COLOR_TABLE);
+//	glDisable(GL_CONVOLUTION_2D);
+//	glDisable(GL_COLOR_TABLE);
 
 	glutSwapBuffers();
 }
 
 auto main(int argc, char *argv[]) -> int
 {
-	if (!gladLoadGLLoader((GLADloadproc)eglGetProcAddress))
-	{
-	    std::cout << "Failed to initialize GLAD" << std::endl;
-	    return -1;
-	}
-
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	
+
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("Imaging Subset Sample");
+	glutReshapeFunc(onResizeWindow);
+	glutDisplayFunc(onRenderScene);
+	
+    int version = gladLoadGL();
+    if(version == 0) {
+        printf("Something went wrong!\n");
+        exit(-1);
+    }
+
+    if (!GLAD_GL_VERSION_1_0) {
+        printf("Your system doesn't support OpenGL >= 2!\n");
+        return -1;
+    }
+
+    printf("OpenGL %s, GLSL %s\n",
+           glGetString(GL_VERSION),
+           glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+//	std::cout << GL_ARB_imaging << std::endl;
+/*
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+	}
+*/
 
 	setupRc();
 	
-	glutReshapeFunc(onResizeWindow);
-	glutDisplayFunc(onRenderScene);
-
 	glutMainLoop();
 
 	return EXIT_SUCCESS;
